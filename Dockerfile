@@ -1,13 +1,13 @@
-FROM java:8-jdk
+FROM java:8-jdk-alpine
 
-RUN apt-get update && apt-get install -y wget git curl zip && rm -rf /var/lib/apt/lists/*
+RUN apk update && apk add wget git curl zip
 
 ENV JENKINS_HOME /var/jenkins_home
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/vloume from a data container, 
 # ensure you use same uid
-RUN useradd -d "$JENKINS_HOME" -u 1000 -m -s /bin/bash jenkins
+RUN addgroup jenkins && adduser -h "$JENKINS_HOME" -u 1000 -G jenkins -s /bin/bash -S jenkins
 
 # Jenkins home directoy is a volume, so configuration and build history 
 # can be persisted and survive image upgrades
