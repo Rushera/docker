@@ -1,4 +1,4 @@
-FROM java:8u45-jdk
+FROM java:8-jdk
 
 RUN apt-get update && apt-get install -y wget git curl zip && rm -rf /var/lib/apt/lists/*
 
@@ -21,13 +21,11 @@ RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
 COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 
-ENV JENKINS_VERSION 1.617
-ENV JENKINS_SHA ae33eb0c0c6ae2317812e11e76e31452a1ce0b62
+ENV JENKINS_VERSION 1.609.2
+ENV JENKINS_SHA 59215da16f9f8a781d185dde683c05fcf11450ef
 
-# could use ADD but this one does not check Last-Modified header 
-# see https://github.com/docker/docker/issues/8331
-RUN curl -fL http://mirrors.jenkins-ci.org/war/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war \
-  && echo "$JENKINS_SHA /usr/share/jenkins/jenkins.war" | sha1sum -c -
+COPY jenkins-$JENKINS_VERSION.war /usr/share/jenkins/jenkins.war
+RUN echo "$JENKINS_SHA  /usr/share/jenkins/jenkins.war" | sha1sum -c -
 
 ENV JENKINS_UC https://updates.jenkins-ci.org
 ENV JENKINS_UC_DOWNLOAD $JENKINS_UC/download
