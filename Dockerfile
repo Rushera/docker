@@ -1,7 +1,7 @@
 FROM openjdk:7-jdk-alpine
 
 # Install fonts in case of FontManager error
-RUN apk update && apk add --no-cache wget git curl zip font-adobe-100dpi ttf-dejavu fontconfig
+RUN apk update && apk add --no-cache wget git curl zip bash font-adobe-100dpi ttf-dejavu fontconfig
 
 ENV JENKINS_HOME /var/jenkins_home
 
